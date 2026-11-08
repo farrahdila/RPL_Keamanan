@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../config/dependency_injector.dart'; 
 import '../services/secure_storage_service.dart';
+import 'post_list_screen.dart'; 
 import 'user_list_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -14,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _tokenController = TextEditingController();
   String? _savedToken;
   bool _hasToken = false;
+
   @override
   void initState() {
     super.initState();
@@ -182,7 +185,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 16),
-              // Section 2: HTTP Request
+
+              // Section 2: HTTP Request & Latihan
               Card(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
@@ -194,7 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           const Icon(Icons.cloud, color: Colors.blue),
                           const SizedBox(width: 8),
                           const Text(
-                            'HTTP Request',
+                            'HTTP Request & Repository',
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -204,10 +208,12 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const SizedBox(height: 8),
                       const Text(
-                        'Ambil data dari REST API (JSONPlaceholder) menggunakan GET request.',
+                        'Ambil data dari REST API (JSONPlaceholder) menggunakan Repository Pattern.',
                         style: TextStyle(fontSize: 12, color: Colors.grey),
                       ),
                       const SizedBox(height: 16),
+
+                      // Tombol 1: User List (Praktikum Utama)
                       SizedBox(
                         width: double.infinity,
                         child: ElevatedButton.icon(
@@ -224,7 +230,36 @@ class _HomeScreenState extends State<HomeScreen> {
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.blue,
                             foregroundColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+
+                      // Tombol 2: Post List (Latihan 1 & 2)
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () {
+                            // Mengambil postRepository menggunakan DependencyInjector (Latihan 2)
+                            final postRepo =
+                                DependencyInjector().postRepository;
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    PostListScreen(postRepository: postRepo),
+                              ),
+                            );
+                          },
+                          icon: const Icon(Icons.article),
+                          label: const Text(
+                            'Lihat Daftar Postingan',
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
                           ),
                         ),
                       ),
@@ -233,6 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 16),
+
               // Section 3: Catatan Keamanan
               Card(
                 color: Colors.amber[50],
